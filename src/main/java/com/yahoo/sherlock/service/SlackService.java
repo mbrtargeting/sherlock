@@ -21,7 +21,7 @@ import java.util.List;
 @Slf4j
 public class SlackService {
 
-    private static final Slack slack = Slack.getInstance();
+    private static final Slack SLACK = Slack.getInstance();
 
 
     public void sendSlackMessage(JobMetadata job, List<AnomalyReport> reports) {
@@ -34,10 +34,9 @@ public class SlackService {
             log.info("Anomaly found - building Slack payload");
             Payload payload = createPayload(job, report);
             log.info("Sending {} to slack webhook {}", payload, CLISettings.SLACK_WEBHOOK);
-            WebhookResponse response = slack.send(CLISettings.SLACK_WEBHOOK, payload);
+            WebhookResponse response = SLACK.send(CLISettings.SLACK_WEBHOOK, payload);
             log.info("Slack response: {}", response);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             log.error("IOException during slack send", e);
             e.printStackTrace();
         }
