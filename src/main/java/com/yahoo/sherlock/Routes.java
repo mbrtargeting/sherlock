@@ -593,6 +593,7 @@ public class Routes {
             JobMetadata job = jobAccessor.getJobMetadata(request.params(Constants.ID));
             List<DruidCluster> druidClusters = clusterAccessor.getDruidClusterList();
             params.put("job", job);
+            params.put("slackWebhook", CLISettings.SLACK_WEBHOOK);
             params.put(Constants.DRUID_CLUSTERS, druidClusters);
             params.put(Constants.TITLE, "Job Details");
             params.put(Triggers.MINUTE.toString(), CLISettings.INTERVAL_MINUTES);

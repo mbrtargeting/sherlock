@@ -75,11 +75,14 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label" for="slackChannel">Slack Channel (for anomaly alerts):</label>
+                                <label class="control-label" for="slackChannel">Slack Channel for Alerts (leave empty to use default channel):</label>
                                 <div>
                                     <input id="slackChannel" name="slackChannel" type="text" class="form-control input-md"
                                            size="25" th:value="${job.getSlackChannel()}"/>
                                 </div>
+                                <button id="slackGlyphicon" type="button" class="btn btn-warning"
+                                        onclick="testSlack()">Test Slack
+                                </button>
                             </div>
 
                             <div class="form-group">
@@ -210,7 +213,7 @@
                                         th:attr="disabled=${job.getJobStatus() != 'CREATED' ? 'false' : 'true'}">
                                     <span class="glyphicon glyphicon-list-alt"></span> Report
                                 </button>
-                                <button id="reportGlyphicon" type="button" class="btn btn-info btn-lg custom-btn-color"
+                                <button id="chartGlyphicon" type="button" class="btn btn-info btn-lg custom-btn-color"
                                         onclick="chartJob()"
                                         th:attr="disabled=${job.getJobStatus() != 'CREATED' ? 'false' : 'true'}">
                                     <span class="glyphicon glyphicon-list-alt"></span> Instant Chart
@@ -699,6 +702,22 @@
         function chartJob() {
             const now = Math.round(new Date().getTime() / 60000);
             window.location.href = '/Chart/' + $('#jobId').val() + '/' + now + '/24';
+        }
+
+        function testSlack() {
+            var slackWebhook = [[${slackWebhook}]];
+            var channel = [[${job.getSlackChannel()}]];
+            var text = 'Test alert from Sherlock';
+            $.ajax({
+                data: 'payload=' + JSON.stringify({
+                    "text": text,
+                    "channel": channel
+                }),
+                dataType: 'json',
+                processData: false,
+                type: 'POST',
+                url: slackWebhook
+            });
         }
 
         $('#removeGlyphicon').click(function() {
