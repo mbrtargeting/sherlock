@@ -252,6 +252,9 @@ class App {
         // Routes to delete Email
         post("/DeleteEmail", Routes::deleteEmail);
 
+        // Debug send a test alert via slack
+        post("/TestSlackAlert/:id", Routes::sendAlertToSlack);
+
         // Enable debug routes only in debug mode
         if (CLISettings.DEBUG_MODE) {
             // Routes to get the database as a JSON dump

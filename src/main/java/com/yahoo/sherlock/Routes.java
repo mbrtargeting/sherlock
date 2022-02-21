@@ -37,6 +37,7 @@ import com.yahoo.sherlock.service.DruidQueryService;
 import com.yahoo.sherlock.service.EmailService;
 import com.yahoo.sherlock.service.SecretProviderService;
 import com.yahoo.sherlock.service.ServiceFactory;
+import com.yahoo.sherlock.service.SlackService;
 import com.yahoo.sherlock.settings.CLISettings;
 import com.yahoo.sherlock.settings.Constants;
 import com.yahoo.sherlock.settings.DatabaseConstants;
@@ -243,6 +244,45 @@ public class Routes {
     }
 
     /**
+     * Method called upon flash query request from user.
+     *
+     * @param request  User request
+     * @param response Anomaly detector response
+     * @return template view route
+     */
+    public static String sendAlertToSlack(Request request, Response response) throws IOException {
+
+        try {
+            String jobId = request.params(Constants.ID);
+            UserQuery userQuery = new Gson().fromJson(request.body(), UserQuery.class);
+            String slackChannel = userQuery.getSlackChannel();
+            SlackService slackService = new SlackService();
+            JobMetadata job = jobAccessor.getJobMetadata(jobId);
+            AnomalyReport report = new AnomalyReport();
+            report.setJobFrequency(job.getFrequency());
+            report.setJobId(job.getJobId());
+            job.setSlackChannel(slackChannel);
+            report.setGroupByFilters("A test dimension");
+            report.setMetricName("Important metric");
+            report.setModelName(job.getTimeseriesModel());
+            report.setModelParam("3.0");
+            Integer randomDeviation = -100 + (int) (Math.random() * ((100 - (-100)) + 1));
+            String anomalyTimestamp = "457050@" + randomDeviation;
+            report.setAnomalyTimestamps(anomalyTimestamp);
+            report.setStatus("testing");
+            report.setHasAnomaly(true);
+            report.setReportQueryEndTime(457050);
+            List<AnomalyReport> reports = new ArrayList<>();
+            reports.add(report);
+            slackService.sendSlackMessage(job, reports);
+            return "Success";
+        } catch (Exception e) {
+            log.error("Unexpected error!", e);
+            return "Error";
+        }
+    }
+
+    /**
      * Method to display status.
      *
      * @param request  User request
@@ -390,10 +430,10 @@ public class Routes {
         Map<String, Object> tableParams = new HashMap<>(defaultParams);
         try {
             UserQuery userQuery = new Gson().fromJson("{}", UserQuery.class);
-            Integer jobId = NumberUtils.parseInt(request.params(Constants.ID));
+            String jobId = request.params(Constants.ID);
             Integer start = NumberUtils.parseInt(request.params(Constants.START_DATE));
             String selectedSeries = request.params(Constants.SELECTED_SERIES);
-            JobMetadata job = jobAccessor.getJobMetadata(jobId.toString());
+            JobMetadata job = jobAccessor.getJobMetadata(jobId);
             Integer end = start + (Granularity.getValue(job.getGranularity()).getMinutes() * 2);
             Integer detectionWindow = 5;
             if (request.params(Constants.DETECTION_WINDOW) != null) {
@@ -593,7 +633,6 @@ public class Routes {
             JobMetadata job = jobAccessor.getJobMetadata(request.params(Constants.ID));
             List<DruidCluster> druidClusters = clusterAccessor.getDruidClusterList();
             params.put("job", job);
-            params.put("slackWebhook", CLISettings.SLACK_WEBHOOK);
             params.put(Constants.DRUID_CLUSTERS, druidClusters);
             params.put(Constants.TITLE, "Job Details");
             params.put(Triggers.MINUTE.toString(), CLISettings.INTERVAL_MINUTES);

@@ -705,18 +705,16 @@
         }
 
         function testSlack() {
-            var slackWebhook = [[${slackWebhook}]];
-            var channel = [[${job.getSlackChannel()}]];
-            var text = 'Test alert from Sherlock';
+            var data = {};
+            data.jobId = $('#jobId').val();
+            data.slackChannel = $('#slackChannel').val();
+
             $.ajax({
-                data: 'payload=' + JSON.stringify({
-                    "text": text,
-                    "channel": channel
-                }),
-                dataType: 'json',
-                processData: false,
+                url: '/TestSlackAlert/' + $('#jobId').val(),
+                dataType: 'text',
+                data: JSON.stringify(data),
+                contentType: "application/json",
                 type: 'POST',
-                url: slackWebhook
             });
         }
 
