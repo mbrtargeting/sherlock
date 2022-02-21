@@ -441,6 +441,7 @@ public class Routes {
             }
             log.info("detection window set to {}", detectionWindow);
             params.put("job", job.toString());
+            params.put(Constants.TITLE, job.getTestName());
             params.put("selectedSeries", selectedSeries);
             params.put("detectionWindow", detectionWindow);
             Granularity granularity = Granularity.getValue(job.getGranularity());
