@@ -29,7 +29,7 @@ public class SlackServiceTest {
         report.setDeviationString("5");
         report.setJobId(12);
         report.setReportQueryEndTime(55512);
-        Payload payload = slackService.createPayload(job, report);
+        Payload payload = slackService.createPayload(report, job.getSlackChannel());
         String payloadJson = new GsonBuilder().setPrettyPrinting().create().toJson(payload);
         String jsonString = new String(Files.readAllBytes(Paths.get("src/test/resources/slack_message.json")));
         assertEquals(jsonString, payloadJson);

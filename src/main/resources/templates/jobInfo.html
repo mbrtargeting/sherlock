@@ -75,7 +75,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label" for="slackChannel">Slack Channel for Alerts (leave empty to use default channel):</label>
+                                <label class="control-label" for="slackChannel">Slack Channels for Alerts (leave empty to use default channel):</label>
                                 <div>
                                     <input id="slackChannel" name="slackChannel" type="text" class="form-control input-md"
                                            size="25" th:value="${job.getSlackChannel()}"/>
@@ -580,7 +580,7 @@
                 data.testName = $('#testName').val();
                 data.owner = $('#ownerName').val();
                 data.ownerEmail = $('#ownerEmail').tokenfield('getTokensList', ',');
-                data.slackChannel = $('#slackChannel').val();
+                data.slackChannel = $('#slackChannel').tokenfield('getTokensList', ',');
                 data.emailOnNoData = $('input[name=emailOnNoData]:checked', '#jobInfoForm').val();
                 data.testDescription = $('#testDescription').val();
                 data.granularity = $('#granularity').val();
@@ -622,6 +622,26 @@
 
         emailTokens.on('tokenfield:createdtoken', function (e) {
                         var re = /\S+@\S+\.\S+/
+                        var valid = re.test(e.attrs.value)
+                        if (!valid) {
+                            $(e.relatedTarget).addClass('invalid')
+                        }
+                        updateMode();
+                   })
+                   .on('tokenfield:editedtoken', function (e) {
+                        updateMode();
+                   })
+                   .on('tokenfield:removedtoken', function (e) {
+                        updateMode();
+                   });
+
+        var slackChannels = $('#slackChannel').tokenfield({
+                                                showAutocompleteOnFocus: false,
+                                                createTokensOnBlur: true
+                                           });
+
+        slackChannels.on('tokenfield:createdtoken', function (e) {
+                        var re = /\S+/
                         var valid = re.test(e.attrs.value)
                         if (!valid) {
                             $(e.relatedTarget).addClass('invalid')

@@ -368,6 +368,20 @@ public class JobMetadata implements Serializable, Cloneable {
         return new ArrayList<>(Arrays.asList(this.getOwnerEmail().split(Constants.COMMA_DELIMITER)));
     }
 
+    /**
+     * Get slack channel comma separated string as a list.
+     * If empty then return a null to use of default channel.
+     * @return a list
+     */
+    public List<String> getSlackChannelAsList() {
+        if (StringUtils.isEmpty(this.getSlackChannel())) {
+            ArrayList list = new ArrayList<>();
+            list.add(null);
+            return list;
+        }
+        return new ArrayList<>(Arrays.asList(this.getSlackChannel().split(Constants.COMMA_DELIMITER)));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

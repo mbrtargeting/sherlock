@@ -35,6 +35,7 @@ import com.yahoo.sherlock.store.Store;
 import com.yahoo.sherlock.utils.TimeUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.time.ZoneOffset;
@@ -121,7 +122,7 @@ public class JobExecutionService {
                                              Arrays.stream(job.getOwnerEmail().split(Constants.COMMA_DELIMITER)).collect(Collectors.toList());
             List<String> finalEmailList = new ArrayList<>();
 
-            if (!CLISettings.SLACK_WEBHOOK.isEmpty()) {
+            if (!StringUtils.isEmpty(CLISettings.SLACK_WEBHOOK)) {
                 slackService.sendSlackMessage(job, reports);
             }
 
