@@ -53,6 +53,7 @@ import com.yahoo.sherlock.utils.NumberUtils;
 import com.yahoo.sherlock.utils.TimeUtils;
 import com.yahoo.sherlock.utils.Utils;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import lombok.extern.slf4j.Slf4j;
@@ -648,6 +649,7 @@ public class Routes {
             params.put(Constants.MONTH, Constants.MAX_MONTH);
             params.put(Constants.TIMESERIES_MODELS, EgadsConfig.TimeSeriesModel.getAllValues());
             params.put(Constants.ANOMALY_DETECTION_MODELS, EgadsConfig.AnomalyDetectionModel.getAllValues());
+            params.put("webhookIsEmpty", StringUtils.isEmpty(CLISettings.SLACK_WEBHOOK));
             boolean isClusterPresent = druidClusters.stream().anyMatch(c -> c.getClusterId().equals(job.getClusterId()));
             params.put(Constants.IS_CLUSTER_PRESENT, isClusterPresent);
             if (!isClusterPresent) {

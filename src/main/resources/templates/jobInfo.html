@@ -75,17 +75,6 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label" for="slackChannel">Slack Channels for Alerts (leave empty to use default channel):</label>
-                                <div>
-                                    <input id="slackChannel" name="slackChannel" type="text" class="form-control input-md"
-                                           size="25" th:value="${job.getSlackChannel()}"/>
-                                </div>
-                                <button id="slackGlyphicon" type="button" class="btn btn-warning"
-                                        onclick="testSlack()">Test Slack
-                                </button>
-                            </div>
-
-                            <div class="form-group">
                                 <label class="control-label" for="emailOnNoData">Get alert if new datapoint is not available:</label>
                                 <div id="emailOnNoData">
                                     <input type="radio" id="emailOnNoDataYes" name="emailOnNoData" value="true"/>
@@ -94,6 +83,17 @@
                                     <input type="radio" id="emailOnNoDataNo" name="emailOnNoData" value="false"/>
                                     <label class="control-label" for="emailOnNoDataNo">NO</label>
                                 </div>
+                            </div>
+
+                            <div class="form-group" th:if="${webhookIsEmpty == false}">
+                                <label class="control-label" for="slackChannel">Slack Channels for Alerts (leave empty to use default channel):</label>
+                                <div>
+                                    <input id="slackChannel" name="slackChannel" type="text" class="form-control input-md"
+                                           size="25" th:value="${job.getSlackChannel()}"/>
+                                </div>
+                                <button id="slackGlyphicon" type="button" class="btn btn-warning"
+                                        onclick="testSlack()">Test Slack
+                                </button>
                             </div>
 
                             <div class="form-group">
