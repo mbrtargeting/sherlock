@@ -320,6 +320,7 @@ public class Routes {
             params.put(Constants.DRUID_CLUSTERS, clusterAccessor.getDruidClusterList());
             params.put(Constants.TIMESERIES_MODELS, EgadsConfig.TimeSeriesModel.getAllValues());
             params.put(Constants.ANOMALY_DETECTION_MODELS, EgadsConfig.AnomalyDetectionModel.getAllValues());
+            params.put("webhookIsEmpty", StringUtils.isEmpty(CLISettings.SLACK_WEBHOOK));
         } catch (IOException e) {
             log.error("Failed to retrieve list of existing Druid clusters!", e);
             params.put(Constants.ERROR, e.getMessage());

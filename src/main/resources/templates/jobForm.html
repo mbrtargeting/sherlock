@@ -64,6 +64,14 @@
                                 </div>
                             </div>
 
+                            <div class="form-group" th:if="${instantView == null and webhookIsEmpty == false}">
+                                <label class="control-label" for="slackChannel">Slack Channels for Alerts (leave empty to use default channel):</label>
+                                <div>
+                                    <input id="slackChannel" name="slackChannel" type="text" class="form-control input-md"
+                                           size="25"/>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label class="control-label" for="druidCluster">Druid Cluster:</label>
                                 <p id="defaultDruidClusterMsg" class="bg-info">Select a Druid cluster</p>
@@ -306,6 +314,11 @@
                 createTokensOnBlur: true
           });
 
+    $('#slackChannel').tokenfield({
+        showAutocompleteOnFocus: false,
+        createTokensOnBlur: true
+    });
+
     $("#popoverInfo").load('/content/kSigmaTable.html #sensitivityTable');
 
     const $druidCluster = $('#druidCluster');
@@ -416,6 +429,7 @@
             data.testDescription = $('#test-description').val();
             data.owner = $('#owner-name').val();
             data.ownerEmail = $('#owner-email').tokenfield('getTokensList', ',');
+            data.slackChannel = $('#slackChannel').tokenfield('getTokensList', ',');
             data.emailOnNoData = $('input[name=emailOnNoData]:checked', '#queryForm').val();
             data.queryUrl = $('#queryUrl').val();
             data.frequency = $('#frequency').val();
