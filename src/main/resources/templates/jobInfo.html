@@ -720,7 +720,8 @@
 
         function chartJob() {
             const now = Math.round(new Date().getTime() / 60000);
-            window.location.href = '/Chart/' + $('#jobId').val() + '/' + now + '/24';
+            const url = '/Chart/' + $('#jobId').val() + '/' + now + '/24';
+            window.open(url, "_blank");
         }
 
         function testSlack() {
