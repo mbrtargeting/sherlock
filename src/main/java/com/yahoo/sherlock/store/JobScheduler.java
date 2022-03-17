@@ -52,7 +52,7 @@ public interface JobScheduler {
 
     /**
      * Remove a job from the priority queue, so that it will
-     * not longer be executed. This method shoul be an atomic operation.
+     * not longer be executed. This method should be an atomic operation.
      *
      * @param jobId the job ID to remove
      * @throws IOException          if an error occurs while unscheduling the job
