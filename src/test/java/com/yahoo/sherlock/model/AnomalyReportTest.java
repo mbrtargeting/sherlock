@@ -224,8 +224,8 @@ public class AnomalyReportTest {
         report.setModelName("model1");
         report.setModelParam("3.0");
         StringJoiner joiner = new StringJoiner(Constants.NEWLINE_DELIMITER);
+        joiner.add("Anomaly: " + "test1");
         joiner.add("Metric: " + "m1");
-        joiner.add("Anomaly test: " + "test1");
         Assert.assertEquals(report.getMetricInfo(), joiner.toString());
         joiner = new StringJoiner(Constants.NEWLINE_DELIMITER);
         joiner.add("Model: " + "model1");

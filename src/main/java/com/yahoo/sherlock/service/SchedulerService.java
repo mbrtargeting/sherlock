@@ -351,6 +351,11 @@ public class SchedulerService {
         // the hours of lag (in minutes)
         Integer offset = job.getFrequency().equalsIgnoreCase(Triggers.MINUTE.toString()) ? Triggers.MINUTE.getMinutes() : Math.abs(idInt) % Constants.MINUTES_IN_HOUR;
         Integer effectiveRunTime = effectiveQueryTime + hoursOfLag * 60 + offset;
+        log.info("Scheduling job [{}] which will run at [{}] with an effective query time [{}]",
+                 job.getJobId(),
+                 TimeUtils.getTimeFromSeconds(effectiveRunTime * 60L, Constants.TIMESTAMP_FORMAT_NO_SECONDS),
+                 TimeUtils.getTimeFromSeconds(effectiveQueryTime * 60L, Constants.TIMESTAMP_FORMAT_NO_SECONDS)
+                 );
         return new ImmutablePair<>(effectiveQueryTime, effectiveRunTime);
     }
 

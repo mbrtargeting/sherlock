@@ -208,7 +208,7 @@ public class Routes {
      * @param response Anomaly detector response
      * @return template view route
      */
-    public static ModelAndView debugInstantJobReport(Request request, Response response) throws IOException {
+    public static ModelAndView debugInstantJobReport(Request request, Response response) {
         Map<String, Object> params = new HashMap<>(defaultParams);
         // set instant form view
         params.put(Constants.INSTANTVIEW, "false");
@@ -251,7 +251,7 @@ public class Routes {
      * @param response Anomaly detector response
      * @return template view route
      */
-    public static String sendAlertToSlack(Request request, Response response) throws IOException {
+    public static String sendAlertToSlack(Request request, Response response) {
 
         try {
             String jobId = request.params(Constants.ID);

@@ -338,10 +338,10 @@ public class AnomalyReport implements Serializable {
      */
     public String getMetricInfo() {
         StringJoiner joiner = new StringJoiner(Constants.NEWLINE_DELIMITER);
-        joiner.add("Metric: " + metricName);
         if (testName != null) {
-            joiner.add("Anomaly test: " + testName);
+            joiner.add("Anomaly: " + testName);
         }
+        joiner.add("Metric: " + metricName);
         return joiner.toString();
     }
 
